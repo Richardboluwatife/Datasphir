@@ -12,6 +12,7 @@ import Repeat from "./repeat.png"
 import Follow from "./Follow.png";
 import Nigeria from "./Nigeria.png"
 import Profile_Icon from "./profile_circle.png"
+import heartLike from "./heartLike.png"
 
 
 export const assets = {
@@ -28,6 +29,6 @@ export const assets = {
   Repeat,
   Follow,
   Nigeria,
-  Profile_Icon
-
+  Profile_Icon,
+  heartLike,
 };
