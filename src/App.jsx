@@ -67,13 +67,13 @@ function App() {
           <Route
             path="dashboard"
             element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <div className="flex">
                   <div className="main-content flex-1 p-2">
                     <Dashboard />
                   </div>
                 </div>
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           />
 
