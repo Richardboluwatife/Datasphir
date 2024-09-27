@@ -22,7 +22,6 @@ function Login({ setShowLogin }) {
     email: "",
     password: "",
     re_password: "", // Only used in Sign Up mode
-    user_type: "Landlord", // Set user_type to "Landlord" by default for sign up
   });
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -34,7 +33,7 @@ function Login({ setShowLogin }) {
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn") || sessionStorage.getItem("isLoggedIn");
     if (isLoggedIn && currentUser) {
-      navigate("/dashboard"); // Redirect to the dashboard if logged in
+      navigate("/"); // Redirect to the dashboard if logged in
     }
   }, [currentUser, navigate]);
 
@@ -81,8 +80,8 @@ function Login({ setShowLogin }) {
     // Set the appropriate URL based on the form state (Sign Up or Login)
     const url =
       currState === "Sign Up"
-        ? "https://rent-management-service.onrender.com/auth/users/"
-        : "https://rent-management-service.onrender.com/auth/jwt/create";
+        ? "https://datasphir-blog-app.onrender.com/auth/users/"
+        : "https://datasphir-blog-app.onrender.com/auth/jwt/create/";
 
     // Prepare the data to be sent in the request
     const dataToSubmit =
@@ -188,7 +187,7 @@ function Login({ setShowLogin }) {
           </div>
         </div>
       ) : (
-        <div>
+        <div className=" pb-5">
           <div className="md:flex gap-32 pt-20 justify-center pb-10">
             <div>
               <div>
@@ -217,7 +216,7 @@ function Login({ setShowLogin }) {
                   type="email"
                   placeholder="Enter your email"
                   name="email"
-                  className="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 h-14"
+                  className="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 h-14 dark:bg-gray-800 text-black dark:text-white"
                   value={loginData.email}
                   onChange={handleChange}
                   required
@@ -230,7 +229,7 @@ function Login({ setShowLogin }) {
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     name="password"
-                    className="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 h-14"
+                    className="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 h-14 dark:bg-gray-800 text-black dark:text-white"
                     value={loginData.password}
                     onChange={handleChange}
                     required
@@ -260,7 +259,7 @@ function Login({ setShowLogin }) {
                         type={showPassword ? "text" : "password"}
                         placeholder="Confirm your password"
                         name="re_password"
-                        className="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 h-14"
+                        className="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 h-14 dark:bg-gray-800 text-black dark:text-white"
                         value={loginData.re_password}
                         onChange={handleChange}
                         required

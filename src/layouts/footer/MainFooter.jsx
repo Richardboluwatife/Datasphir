@@ -9,7 +9,7 @@ function Footer({ uploadedImage }) {
     <div className="fixed bottom-0 left-0 right-0">
       <footer className="flex justify-between px-5 py-2 bg-white shadow">
         <NavLink
-          to="/dashboard"
+          to="/"
           className={({ isActive }) =>
             `group w-10 h-10 flex items-center justify-center rounded-full transition bg-gray-300 ${
               isActive ? "bg-grey-400" : ""

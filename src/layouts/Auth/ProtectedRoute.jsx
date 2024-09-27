@@ -21,13 +21,13 @@ const ProtectedRoute = ({ children }) => {
   }, [currentUser]);
 
   const handleLogin = () => {
-    navigate("/Login-Signup"); // Navigate to the login page
+    navigate("/login"); // Navigate to the login page
   };
 
   if (loading) {
     // Show a loading state while checking the authentication status
     return (
-      <div className="flex justify-center items-center h-[607px]">
+      <div className="flex justify-center items-center h-[607px] ">
         <h1 className="text-2xl font-bold">Loading...</h1>
       </div>
     );

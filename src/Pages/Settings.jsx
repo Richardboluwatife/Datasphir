@@ -1,45 +1,45 @@
-// Make sure you are passing fileInputRef correctly from parent component
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
 import { assets } from "../assets/assets";
 
+// eslint-disable-next-line react/prop-types
 function Settings({ fileInputRef }) {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  // eslint-disable-next-line no-unused-vars
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [profileData, setProfileData] = useState({
     firstName: "",
-    middleName: "",
     lastName: "",
     email: "",
     phoneNumber: "",
-    address: "",
     username: "",
   });
 
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
+        const token = localStorage.getItem("access_token");
         const response = await fetch(
           "https://rent-management-service.onrender.com/auth/users/me/",
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+              Authorization: `Bearer ${token}`,
             },
+            redirect: "follow",
           }
         );
-
         if (!response.ok) throw new Error("Failed to fetch profile data");
 
         const userProfile = await response.json();
         setProfileData({
           firstName: userProfile.first_name || "",
-          middleName: userProfile.middle_name || "",
           lastName: userProfile.last_name || "",
           email: userProfile.email || "",
           phoneNumber: userProfile.phone_number || "",
-          address: userProfile.address || "",
           username: userProfile.username || "",
         });
 
@@ -47,7 +47,7 @@ function Settings({ fileInputRef }) {
           setUploadedImage(userProfile.profile_image_url);
         }
       } catch (error) {
-        console.error("Error fetching profile data:", error);
+        console.error("Error fetching profile data:", error.message);
       } finally {
         setIsLoading(false);
       }
@@ -58,7 +58,7 @@ function Settings({ fileInputRef }) {
 
   const handleUploadClick = () => {
     // eslint-disable-next-line react/prop-types
-    if (fileInputRef.current) fileInputRef.current.click();
+    if (fileInputRef?.current) fileInputRef.current.click();
   };
 
   const handleInputChange = (e) => {
@@ -83,21 +83,20 @@ function Settings({ fileInputRef }) {
   const handleEditProfile = async () => {
     if (isEditing) {
       try {
+        const token = localStorage.getItem("access_token");
         const response = await fetch(
           "https://rent-management-service.onrender.com/auth/users/me/",
           {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+              Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
               first_name: profileData.firstName,
-              middle_name: profileData.middleName,
               last_name: profileData.lastName,
               email: profileData.email,
               phone_number: profileData.phoneNumber,
-              address: profileData.address,
               username: profileData.username,
               profile_image_url: uploadedImage,
             }),
@@ -116,7 +115,7 @@ function Settings({ fileInputRef }) {
           setUploadedImage(updatedProfile.profile_image_url);
         }
       } catch (error) {
-        console.error("Error updating profile data:", error);
+        console.error("Error updating profile data:", error.message);
       }
     }
     setIsEditing(!isEditing);
@@ -140,9 +139,14 @@ function Settings({ fileInputRef }) {
     }, 300);
   };
 
+  // eslint-disable-next-line no-unused-vars
+  const toggleDarkMode = () => {
+    setIsDarkMode((prevMode) => !prevMode);
+  };
+
   if (isLoading) {
     return (
-      <div className="font-semibold text-[40px] text-center my-52 left-1/2">
+      <div className="font-semibold text-[40px] text-center my-52">
         Loading...
       </div>
     );
@@ -153,11 +157,17 @@ function Settings({ fileInputRef }) {
       <div className="flex pt-5 gap-[550px]">
         <div>
           <p className="text-3xl pb-2 font-bold">Account Settings</p>
+          {/* <button
+            onClick={toggleDarkMode}
+            className="fixed top-24 right-4 p-2 bg-gray-300 dark:bg-gray-700 rounded"
+          >
+            {isDarkMode ? "Light Mode" : "Dark Mode"}
+          </button> */}
         </div>
       </div>
 
       <div className="inline-flex">
-        <div className="block h-[50rem] bg-gray-100 rounded-xl px-1 pt-3">
+        <div className="block h-[45rem] bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 rounded-xl px-1 pt-3">
           <div className="flex items-center">
             <div className="w-36 h-36 rounded-full overflow-hidden flex items-center justify-center bg-gray-200">
               {uploadedImage ? (
@@ -200,26 +210,12 @@ function Settings({ fileInputRef }) {
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 placeholder="First Name"
-                className="block font-sans w-44 border-2 rounded-[20px] bg-gray-100 my-1 py-5 px-3"
+                className="block font-sans w-44 border-2 rounded-[20px] bg-gray-100 my-1 py-5 px-3 dark:bg-gray-800 text-black dark:text-white"
               />
             </label>
-            <label>
-              <span className="font-sans ml-4">Middle Name</span>
-              <input
-                type="text"
-                name="middleName"
-                value={profileData.middleName}
-                onChange={handleInputChange}
-                disabled={!isEditing}
-                placeholder="Middle Name"
-                className="block font-sans w-44 border-2 rounded-[20px] bg-gray-100 mr-1 my-1 py-5 px-3 ml-1"
-              />
-            </label>
-          </div>
 
-          <div className="my-4 flex">
             <label>
-              <span className="font-sans">Last Name</span>
+              <span className="font-sans pl-2">Last Name</span>
               <input
                 type="text"
                 name="lastName"
@@ -227,10 +223,12 @@ function Settings({ fileInputRef }) {
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 placeholder="Last Name"
-                className="block font-sans w-44 border-2 rounded-[20px] bg-gray-100 my-1 py-5 px-3"
+                className="block font-sans w-44 border-2 rounded-[20px] bg-gray-100 mr-1 my-1 py-5 px-3 ml-1 dark:bg-gray-800 text-black dark:text-white"
               />
             </label>
+          </div>
 
+          <div className="my-4 flex">
             <label>
               <span className="font-sans">Username</span>
               <input
@@ -240,19 +238,14 @@ function Settings({ fileInputRef }) {
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 placeholder="Username"
-                className="block font-sans w-44 border-2 rounded-[20px] bg-gray-100 mr-1 my-1 py-5 px-3 ml-1"
+                className="block font-sans w-[350px] border-2 rounded-[20px] bg-gray-100 mx-1 my-1 py-5 px-3 dark:bg-gray-800 text-black dark:text-white"
               />
             </label>
           </div>
 
-          <div className="block">
-            <span className="font-sans">Phone Number</span>
+          <div className="flex">
+            <span className="font-sans pt-6 pl-5">Phone Number</span>
             <label htmlFor="phone" className="flex">
-              <img
-                src={assets.Nigeria}
-                alt="Nigeria flag"
-                className="block font-sans w-22 border-2 rounded-[20px] bg-gray-100 my-1 py-2 px-3"
-              />
               <input
                 type="text"
                 name="phoneNumber"
@@ -260,7 +253,7 @@ function Settings({ fileInputRef }) {
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 placeholder="Phone Number"
-                className="block font-sans w-48 border-2 rounded-[20px] bg-gray-100 my-1 ml-1 py-5 px-3"
+                className="block font-sans w-48 border-2 rounded-[20px] bg-gray-100 my-1 ml-5 py-5 px-3 dark:bg-gray-800 text-black dark:text-white"
               />
             </label>
           </div>
@@ -275,29 +268,17 @@ function Settings({ fileInputRef }) {
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 placeholder="Email"
-                className="block font-sans w-[350px] border-2 rounded-[20px] bg-gray-100 mx-1 my-1 py-5 px-3"
-              />
-            </label>
-            <label>
-              <span className="font-sans">Address</span>
-              <input
-                type="text"
-                name="address"
-                value={profileData.address}
-                onChange={handleInputChange}
-                disabled={!isEditing}
-                placeholder="Address"
-                className="block font-sans w-[350px] border-2 rounded-[20px] bg-gray-100 mx-1 my-1 py-5 px-3"
+                className="block font-sans w-[350px] border-2 rounded-[20px] bg-gray-100 mx-1 my-1 py-5 px-3 dark:bg-gray-800 text-black dark:text-white"
               />
             </label>
           </div>
 
-          <div className="mt-10 flex justify-end ">
+          <div className="mt-10 flex justify-end">
             {isEditing ? (
-              <div className="flex gap-6">
+              <div className="flex gap-10">
                 <button
                   onClick={handleEditProfile}
-                  className="border-none mx-2 hover:bg-blue-700 text-lg transition ease-out duration-200 bg-blue-600 font-sans rounded-xl text-white px-8 py-3"
+                  className="border-none mx-2 hover:bg-blue-700 text-lg transition ease-out duration-200 bg-blue-600 font-sans rounded-xl text-white px-5 py-3"
                 >
                   Save Changes ✏
                 </button>
@@ -321,24 +302,12 @@ function Settings({ fileInputRef }) {
       </div>
 
       {isModalOpen && (
-        <div
-          className={`${
-            isVisible ? "opacity-100" : "opacity-0"
-          } fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center transition-opacity duration-300`}
-        >
-          <div className="bg-white rounded-lg p-4">
-            <h2 className="text-xl font-semibold">Image Preview</h2>
-            <img
-              src={uploadedImage}
-              alt="Profile Preview"
-              className="w-80 h-80 object-cover rounded-lg mt-2"
-            />
-            <button
-              onClick={handleCloseModal}
-              className="mt-4 bg-red-500 text-white rounded-lg px-4 py-2"
-            >
-              Close
-            </button>
+        <div className={`modal ${isVisible ? "visible" : "invisible"}`}>
+          <div className="modal-content">
+            <span className="close" onClick={handleCloseModal}>
+              &times;
+            </span>
+            <img src={uploadedImage} alt="Uploaded" />
           </div>
         </div>
       )}

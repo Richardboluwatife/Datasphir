@@ -45,7 +45,7 @@ function ResetPassword() {
   };
 
   return (
-    <section className="font-sans text-lg block text-center h-[89vh]">
+    <section className="font-sans text-lg block text-center h-[89vh] pt-20">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen xs:pt-20 sm:pt-52 md:pt-0">
         <p className="flex text-2xl xs:pt-6 pt-10 items-center md:pt-0 mb-8 xs:text-2xl">
           Enter your Email to reset your password

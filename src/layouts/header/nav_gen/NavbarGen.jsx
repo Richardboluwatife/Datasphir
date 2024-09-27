@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 
 function NavbarGen() {
   return (
-    <div className="fixed top-0 left-0 right-0 bg-white shadow flex items-center justify-between px-5 py-3 z-10">
+    <div className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 text-black dark:text-white p-4 shadow flex items-center justify-between px-5 py-3 z-10">
       <NavLink to="/dashboard">
         <h1 className="text-xl font-semibold">Datasphir</h1>
       </NavLink>
