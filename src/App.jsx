@@ -69,16 +69,6 @@ function App() {
             <Route path="/" element={<RootLayout1 />}>
               <Route path="/SignUp" element={<Login />} />
               <Route
-                index
-                element={
-                  <div className="flex">
-                    <div className="main-content flex-1 p-2">
-                      <Dashboard />
-                    </div>
-                  </div>
-                }
-              />
-              <Route
                 path="auth/activate/:uid/:token"
                 element={<AccountActivation />}
               />
@@ -93,6 +83,24 @@ function App() {
 
             {/* Protected Routes */}
             <Route path="/" element={<RootLayout1 />}>
+
+              <Route
+                index
+                element={
+                  <ProtectedRoute>
+                    <div className="flex">
+                      <div className="main-content flex-1 p-2">
+                        <Dashboard
+                          uploadedImage={uploadedImage}
+                          handleImageUpload={handleImageUpload}
+                          fileInputRef={fileInputRef}
+                        />
+                      </div>
+                    </div>
+                  </ProtectedRoute>
+                }
+              />
+
               <Route
                 path="settings"
                 element={
