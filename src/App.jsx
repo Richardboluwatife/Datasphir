@@ -12,6 +12,7 @@ import Settings from "./Pages/Settings";
 import { AuthProvider } from "./layouts/Auth/AuthContext";
 import ProtectedRoute from "./layouts/Auth/ProtectedRoute";
 import Post from "./Pages/Post";
+import Onetimelogin from "./layouts/Auth/Onetimelogin"
 
 function App() {
   const [uploadedImage, setUploadedImage] = useState(
@@ -53,7 +54,7 @@ function App() {
 
   return (
     <AuthProvider>
-      <div className={`${isDarkMode ? "dark" : ""}`}>
+      <div className={`${isDarkMode ? "dark" : ""} w-full`}>
         {/* Theme toggle button */}
         <button
           onClick={toggleDarkMode}
@@ -66,7 +67,7 @@ function App() {
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<RootLayout1 />}>
-              <Route path="/login" element={<Login />} />
+              <Route path="/SignUp" element={<Login />} />
               <Route
                 index
                 element={
@@ -85,6 +86,7 @@ function App() {
                 path="password-reset/:uid/:token"
                 element={<PasswordReset />}
               />
+              <Route path="login" element={<Onetimelogin />} />
               <Route path="reset-password" element={<ResetPassword />} />
               <Route path="*" element={<NotFound />} />
             </Route>

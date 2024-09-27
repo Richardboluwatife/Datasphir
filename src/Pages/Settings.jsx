@@ -24,7 +24,7 @@ function Settings({ fileInputRef }) {
       try {
         const token = localStorage.getItem("access_token");
         const response = await fetch(
-          "https://rent-management-service.onrender.com/auth/users/me/",
+          "https://datasphir-blog-app.onrender.com//auth/users/me/",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -85,7 +85,7 @@ function Settings({ fileInputRef }) {
       try {
         const token = localStorage.getItem("access_token");
         const response = await fetch(
-          "https://rent-management-service.onrender.com/auth/users/me/",
+          "https://datasphir-blog-app.onrender.com//auth/users/me/",
           {
             method: "PUT",
             headers: {

@@ -15,7 +15,7 @@ function ResetPassword() {
 
     try {
       const response = await fetch(
-        "https://rent-management-service.onrender.com/auth/users/reset_password/",
+        "https://datasphir-blog-app.onrender.com/auth/users/reset_password/",
         {
           method: "POST",
           headers: {
@@ -45,7 +45,7 @@ function ResetPassword() {
   };
 
   return (
-    <section className="font-sans text-lg block text-center h-[89vh] pt-20">
+    <section className="font-sans text-lg block text-center h-[89vh] pt-20 dark:bg-gray-800 text-black dark:text-white">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen xs:pt-20 sm:pt-52 md:pt-0">
         <p className="flex text-2xl xs:pt-6 pt-10 items-center md:pt-0 mb-8 xs:text-2xl">
           Enter your Email to reset your password
@@ -58,7 +58,7 @@ function ResetPassword() {
                   type="email"
                   name="email"
                   id="email"
-                  className="sm:text-lg text-sm bg-gray-50 border border-gray-300 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 placeholder-gray-400 focus:outline-none focus:ring-2  focus:ring-gray-700"
+                  className="sm:text-lg text-sm dark:bg-gray-800 text-black dark:text-white border border-gray-300 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 placeholder-gray-400 focus:outline-none focus:ring-2  focus:ring-gray-700"
                   placeholder="p*****************g@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}

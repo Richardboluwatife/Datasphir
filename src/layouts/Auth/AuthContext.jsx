@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
   const fetchUserData = async (token) => {
     try {
       const response = await fetch(
-        "https://rent-management-service.onrender.com/auth/users/me/",
+        "https://datasphir-blog-app.onrender.com/auth/users/me/",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }) => {
     setError(null); // Reset error state
     try {
       const response = await fetch(
-        "https://rent-management-service.onrender.com/auth/jwt/create",
+        "https://datasphir-blog-app.onrender.com/auth/jwt/create/",
         {
           method: "POST",
           headers: {

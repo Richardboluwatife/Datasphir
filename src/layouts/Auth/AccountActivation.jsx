@@ -28,7 +28,7 @@ const AccountActivation = () => {
       try {
         // Send a POST request to activate the account
         await axios.post(
-          "https://rent-management-service.onrender.com/auth/users/activation/",
+          "https://datasphir-blog-app.onrender.com/auth/users/activation/",
           { uid, token }
         );
 
@@ -48,30 +48,10 @@ const AccountActivation = () => {
           clearInterval(progressInterval); // Clear interval when done
           setIsActivating(false);
 
-          try {
-            // Fetch user details to check user type
-            const response = await axios.get(
-              "https://rent-management-service.onrender.com/auth/users/me/"
-            );
-            const userType = response.data.user_type;
+          setActivationMessage("Account activated successfully!");
 
-            // Conditionally handle the user type
-            if (userType === "Landlord") {
-              setActivationMessage(
-                "Account activated successfully! You can now log in."
-              );
-              navigate("/Login-Signup"); // Redirect to login page
-            } else if (userType === "Tenant") {
-              setActivationMessage(
-                "Account activated successfully! Go back to the website and log in."
-              );
-            }
-          } catch (error) {
-            console.error("Error fetching user details:", error.response?.data);
-            setActivationMessage(
-              "Account activated, but there was an issue fetching user details. Please try again later."
-            );
-          }
+          // Navigate to home route after activation
+          navigate("/");
         }, 2000); // Adjust delay as needed
       } catch (error) {
         setIsActivating(false);
@@ -86,7 +66,7 @@ const AccountActivation = () => {
   }, [uid, token, navigate]); // Run when uid, token, or navigate changes
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen">
+    <div className="flex flex-col justify-center items-center h-screen bg-white dark:bg-gray-800 text-black dark:text-white p-2 pt-16">
       <h1 className="text-2xl font-bold mb-4">
         {isActivating ? "Activating your account..." : "Activation Complete"}
       </h1>

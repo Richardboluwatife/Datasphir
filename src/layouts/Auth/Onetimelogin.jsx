@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars, react/prop-types
 function Login({ setShowLogin }) {
   const { currentUser, login } = useAuth(); // Get currentUser and login function from AuthContext
-  const [currState, setCurrState] = useState("Sign Up");
+  const [currState, setCurrState] = useState("Login");
   const [showPassword, setShowPassword] = useState(false);
   const [passwordMismatch, setPasswordMismatch] = useState(false);
   const [accountCreated, setAccountCreated] = useState(false);
@@ -22,21 +22,20 @@ function Login({ setShowLogin }) {
     email: "",
     password: "",
     re_password: "", // Only used in Sign Up mode
-    user_type: "Landlord", // Set user_type to "Landlord" by default for sign up
   });
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isInvalidLogin, setIsInvalidLogin] = useState(false); // Track invalid login
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/dashboard"; // Default to dashboard if no previous location
+  const from = location.state?.from?.pathname || "/"; // Default to dashboard if no previous location
 
   useEffect(() => {
     const isLoggedIn =
       localStorage.getItem("isLoggedIn") ||
       sessionStorage.getItem("isLoggedIn");
     if (isLoggedIn && currentUser) {
-      navigate("/dashboard"); // Redirect to the dashboard if logged in
+      navigate("/"); // Redirect to the dashboard if logged in
     }
   }, [currentUser, navigate]);
 
@@ -80,8 +79,8 @@ function Login({ setShowLogin }) {
     // Set the appropriate URL based on the form state (Sign Up or Login)
     const url =
       currState === "Sign Up"
-        ? "https://rent-management-service.onrender.com/auth/users/"
-        : "https://rent-management-service.onrender.com/auth/jwt/create";
+        ? "https://datasphir-blog-app.onrender.com/auth/users/"
+        : "https://datasphir-blog-app.onrender.com/auth/jwt/create/";
 
     // Prepare the data to be sent in the request
     const dataToSubmit =
@@ -187,7 +186,7 @@ function Login({ setShowLogin }) {
           </div>
         </div>
       ) : (
-        <div>
+        <div className=" pb-5">
           <div className="md:flex gap-32 pt-20 justify-center pb-10">
             <div>
               <div>
@@ -216,7 +215,7 @@ function Login({ setShowLogin }) {
                   type="email"
                   placeholder="Enter your email"
                   name="email"
-                  className="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 h-14"
+                  className="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 h-14 dark:bg-gray-800 text-black dark:text-white"
                   value={loginData.email}
                   onChange={handleChange}
                   required
@@ -229,7 +228,7 @@ function Login({ setShowLogin }) {
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     name="password"
-                    className="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 h-14"
+                    className="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 h-14 dark:bg-gray-800 text-black dark:text-white"
                     value={loginData.password}
                     onChange={handleChange}
                     required
@@ -259,7 +258,7 @@ function Login({ setShowLogin }) {
                         type={showPassword ? "text" : "password"}
                         placeholder="Confirm your password"
                         name="re_password"
-                        className="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 h-14"
+                        className="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 h-14 dark:bg-gray-800 text-black dark:text-white"
                         value={loginData.re_password}
                         onChange={handleChange}
                         required

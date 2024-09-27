@@ -81,7 +81,7 @@ function PasswordReset() {
 
     try {
       const response = await fetch(
-        "https://rent-management-service.onrender.com/auth/users/reset_password_confirm/",
+        "https://datasphir-blog-app.onrender.com/auth/users/reset_password_confirm/",
         {
           method: "POST",
           headers: {
@@ -108,7 +108,7 @@ function PasswordReset() {
 
       // Handle successful password reset
       setIsSubmitting(false);
-      navigate("/Login-Signup"); // Redirect to login page after successful password reset
+      navigate("/"); // Redirect to login page after successful password reset
     } catch (error) {
       clearInterval(interval);
       setError("An error occurred. Please try again.");
