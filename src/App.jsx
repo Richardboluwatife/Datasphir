@@ -1,144 +1,28 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect, useRef } from "react";
-import { Route, Routes } from "react-router-dom";
-import RootLayout1 from "./layouts/header/nav_gen/RootLayout1";
-import Login from "./layouts/Auth/Login";
-import NotFound from "./routes/NotFound";
-import AccountActivation from "./layouts/Auth/AccountActivation";
-import PasswordReset from "./layouts/Auth/PasswordReset";
-import ResetPassword from "./layouts/Auth/ResetPassword";
-import Dashboard from "./Pages/Dashboard";
-import Settings from "./Pages/Settings";
-import { AuthProvider } from "./layouts/Auth/AuthContext";
-import ProtectedRoute from "./layouts/Auth/ProtectedRoute";
-import Post from "./Pages/Post";
-import Onetimelogin from "./layouts/Auth/Onetimelogin"
+// src/App.jsx
+import React, { useState, useEffect } from 'react';
+import Dashboard from './components/Dashboard';
+import ThemeToggle from './components/ThemeToggle';
+import { WebSocketProvider } from './context/WebSocketContext';
 
-function App() {
-  const [uploadedImage, setUploadedImage] = useState(
-    localStorage.getItem("uploadedImage") || "assets/profile_circle"
-  );
-  const fileInputRef = useRef(null);
-
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const imageUrl = e.target.result;
-        setUploadedImage(imageUrl);
-        localStorage.setItem("uploadedImage", imageUrl);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      console.error("Invalid file selected");
-    }
-  };
-
-  const [isDarkMode, setIsDarkMode] = useState(
-    localStorage.getItem("theme") === "dark"
-  );
-
-  const toggleDarkMode = () => {
-    const newTheme = isDarkMode ? "light" : "dark";
-    setIsDarkMode((prev) => !prev);
-    document.documentElement.classList.toggle("dark", !isDarkMode);
-    localStorage.setItem("theme", newTheme);
-  };
+const App = () => {
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "light";
-    document.documentElement.classList.toggle("dark", savedTheme === "dark");
-    setIsDarkMode(savedTheme === "dark");
-  }, []);
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
   return (
-    <AuthProvider>
-      <div className={`${isDarkMode ? "dark" : ""} w-full`}>
-        {/* Theme toggle button */}
-        <button
-          onClick={toggleDarkMode}
-          className="fixed top-24 right-4 p-2 bg-gray-300 dark:bg-gray-700 rounded"
-        >
-          {isDarkMode ? "Light Mode" : "Dark Mode"}
-        </button>
-
-        <div className="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white">
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<RootLayout1 />}>
-              <Route path="/SignUp" element={<Login />} />
-              <Route
-                path="auth/activate/:uid/:token"
-                element={<AccountActivation />}
-              />
-              <Route
-                path="password-reset/:uid/:token"
-                element={<PasswordReset />}
-              />
-              <Route path="login" element={<Onetimelogin />} />
-              <Route path="reset-password" element={<ResetPassword />} />
-              <Route path="*" element={<NotFound />} />
-            </Route>
-
-            {/* Protected Routes */}
-            <Route path="/" element={<RootLayout1 />}>
-
-              <Route
-                index
-                element={
-                  <ProtectedRoute>
-                    <div className="flex">
-                      <div className="main-content flex-1 p-2">
-                        <Dashboard
-                          uploadedImage={uploadedImage}
-                          handleImageUpload={handleImageUpload}
-                          fileInputRef={fileInputRef}
-                        />
-                      </div>
-                    </div>
-                  </ProtectedRoute>
-                }
-              />
-
-              <Route
-                path="settings"
-                element={
-                  <ProtectedRoute>
-                    <div className="flex">
-                      <div className="main-content flex-1 p-2">
-                        <Settings
-                          uploadedImage={uploadedImage}
-                          handleImageUpload={handleImageUpload}
-                          fileInputRef={fileInputRef}
-                        />
-                      </div>
-                    </div>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="post"
-                element={
-                  <ProtectedRoute>
-                    <div className="flex">
-                      <div className="main-content flex-1 p-2">
-                        <Post
-                          uploadedImage={uploadedImage}
-                          handleImageUpload={handleImageUpload}
-                          fileInputRef={fileInputRef}
-                        />
-                      </div>
-                    </div>
-                  </ProtectedRoute>
-                }
-              />
-            </Route>
-          </Routes>
-        </div>
+    <WebSocketProvider>
+      <div className="min-h-screen bg-gray-200 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+        <header className="p-4 flex justify-between items-center shadow">
+          <h1 className="text-2xl font-bold">Logistics Dashboard</h1>
+          <ThemeToggle theme={theme} setTheme={setTheme} />
+        </header>
+        <Dashboard />
       </div>
-    </AuthProvider>
+    </WebSocketProvider>
   );
-}
+};
 
 export default App;
